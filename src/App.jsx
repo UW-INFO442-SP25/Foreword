@@ -17,10 +17,10 @@ export default function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Feed />} />
-          <Route path="/about" element={<About />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/account" element={<Account />} />
         </Routes>
+        <About />
       </Router>
     </div>
   );
