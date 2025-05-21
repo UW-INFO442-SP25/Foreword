@@ -12,6 +12,7 @@ import Settings from './components/Settings';
 import Home from './components/Home';
 import CreateReview from './components/CreateReview';
 import Community from './components/Community';
+import InputBook from './components/InputBook';
 
 export default function App() {
   const [reviews, setReviews] = useState([]);
@@ -38,6 +39,7 @@ export default function App() {
               <Route path="/about" element={<About />} />
               <Route path="/home" element={<Home reviews={reviews} />} />
               <Route path="/CreateReview" element={<CreateReview addReview={addReview} />} />
+              <Route path="/InputBook" element={<InputBook />} />
               <Route path="/account" element={
                 <PrivateRoute>
                   <Account />
