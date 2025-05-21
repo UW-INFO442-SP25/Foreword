@@ -29,7 +29,7 @@ export default function Landing() {
                 <div className="feature-card">
                     <div className="feature-icon">🔍</div>
                     <h3>Discover Books</h3>
-                    <p>Find new books based on your interests and friends' recommendations</p>
+                    <p>Find new books based on your interests and friends' reviews</p>
                 </div>
                 <div className="feature-card">
                     <div className="feature-icon">💬</div>

@@ -1,9 +1,9 @@
 import React from 'react';
 
-export default function Feed() {
+export default function Community() {
     return (
         <div>
-            <h1>Feed</h1>
+            <h1>Community</h1>
         </div>
     );
 }

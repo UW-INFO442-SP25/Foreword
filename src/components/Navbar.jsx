@@ -9,8 +9,8 @@ export default function Navbar() {
         <div className="navbar">
             <Link to="/" className="navbar-brand">Foreword</Link>
             <nav>
-                <Link to="/feed">Feed</Link>
-                <Link to="/settings">Settings</Link>
+                <Link to="/home">Home</Link>
+                <Link to="/community">Community</Link>
                 {currentUser ? (
                     <Link to="/account">Account</Link>
                 ) : (
