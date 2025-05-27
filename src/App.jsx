@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Navbar from './components/Navbar';
+import Navbar from './components/Navbar/Navbar';
 
-import About from './components/About';
-import Account from './components/Account';
-import Login from './components/Login';
-import PrivateRoute from './components/PrivateRoute';
+import About from './components/About/About';
+import Account from './components/Account/Account';
+import Login from './components/Login/Login';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import { AuthProvider } from './contexts/AuthContext';
-import Landing from './components/Landing';
-import Settings from './components/Settings';
-import Home from './components/Home';
-import CreateReview from './components/CreateReview';
-import Community from './components/Community';
-import InputBook from './components/InputBook';
+import Landing from './components/Landing/Landing';
+import Settings from './components/Settings/Settings';
+import Home from './components/Home/Home';
+import CreateReview from './components/CreateReview/CreateReview';
+import Community from './components/Community/Community';
+import InputBook from './components/InputBook/InputBook';
+import BookDetail from './components/BookDetail/BookDetail';
 
 export default function App() {
   const [reviews, setReviews] = useState([]);
@@ -40,6 +41,7 @@ export default function App() {
               <Route path="/home" element={<Home reviews={reviews} />} />
               <Route path="/CreateReview" element={<CreateReview addReview={addReview} />} />
               <Route path="/InputBook" element={<InputBook />} />
+              <Route path="/book/:bookId" element={<BookDetail reviews={reviews} />} />
               <Route path="/account" element={
                 <PrivateRoute>
                   <Account />

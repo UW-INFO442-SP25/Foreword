@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import './Account.css';
 
 export default function Account() {
     const [error, setError] = useState('');
@@ -36,4 +37,4 @@ export default function Account() {
             </button>
         </div>
     );
-}
+} 

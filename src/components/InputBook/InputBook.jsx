@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './InputBook.css';
 
 const InputBook = () => {
   const [keyword, setKeyword] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setKeyword(e.target.value);
@@ -17,10 +20,11 @@ const InputBook = () => {
       const response = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(keyword)}`);
       const data = await response.json();
 
-      // Transform the data to include cover image URLs
+      // Transform the data to include cover image URLs and work IDs
       const booksWithCovers = data.docs.map(book => ({
         ...book,
-        coverUrl: book.cover_i ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg` : null
+        coverUrl: book.cover_i ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg` : null,
+        workId: book.key?.split('/').pop() || book.key
       }));
 
       setSearchResults(booksWithCovers);
@@ -31,9 +35,17 @@ const InputBook = () => {
     }
   }
 
+  const handleBookClick = (book) => {
+    // Extract work ID from the book key
+    const workId = book.key.split('/').pop();
+    if (workId) {
+      navigate(`/book/${workId}`);
+    }
+  }
+
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Search Books</h1>
+    <div className="container">
+      <h1 className="text-2xl mb-4">Search Books</h1>
       <form onSubmit={handleSubmit} className="mb-6">
         <div className="flex gap-2">
           <input
@@ -56,7 +68,11 @@ const InputBook = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {searchResults.map((book) => (
-          <div key={book.key} className="border rounded p-4">
+          <div 
+            key={book.key} 
+            className="border rounded p-2 cursor-pointer hover:shadow-lg transition-shadow"
+            onClick={() => handleBookClick(book)}
+          >
             {book.coverUrl ? (
               <img
                 src={book.coverUrl}
@@ -82,4 +98,4 @@ const InputBook = () => {
   )
 }
 
-export default InputBook;
+export default InputBook; 

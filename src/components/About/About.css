@@ -1,0 +1,12 @@
+.about-container {
+  margin: 1rem auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  text-align: justify;
+  max-width: 800px;
+}
+
+.about-title {
+  text-align: center;
+  margin-bottom: 2rem;
+} 
