@@ -33,8 +33,33 @@
   border-radius: 4px;
   padding: 0.5rem 1rem;
   cursor: pointer;
+  margin-bottom: 2rem;
 }
 
 .btn-logout:hover {
   background-color: #c82333;
+}
+
+.user-reviews-section {
+  margin-top: 2rem;
+  text-align: left;
+}
+
+.user-reviews-section h2 {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.no-reviews-message {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  padding: 1rem;
+}
+
+.user-reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1rem;
 } 

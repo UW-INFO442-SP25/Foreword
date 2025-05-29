@@ -3,12 +3,11 @@ import { Link } from 'react-router-dom';
 import Review from '../Review/Review';
 import './Home.css';
 
-export default function Home({ reviews = [] }) {
+export default function Home({ reviews = [], updateReviewLikes }) {
     return (
         <div className="home-container">
             <div className="home-header">
                 <h1>Latest Reviews</h1>
-                {/* <Link to="/CreateReview" className="create-review-btn">Write a Review</Link> */}
             </div>
             
             {reviews.length === 0 ? (
@@ -18,7 +17,11 @@ export default function Home({ reviews = [] }) {
             ) : (
                 <div className="reviews-list">
                     {reviews.map((review, index) => (
-                        <Review key={index} review={review} />
+                        <Review 
+                            key={index} 
+                            review={review} 
+                            updateReviewLikes={updateReviewLikes}
+                        />
                     ))}
                 </div>
             )}

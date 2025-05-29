@@ -3,7 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import Review from '../Review/Review';
 import './BookDetail.css';
 
-const BookDetail = ({ reviews = [] }) => {
+const BookDetail = ({ reviews = [], updateReviewLikes }) => {
     const { bookId } = useParams();
     const [book, setBook] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -101,7 +101,11 @@ const BookDetail = ({ reviews = [] }) => {
                     </div>
                 ) : (
                     bookReviews.map((review, index) => (
-                        <Review key={index} review={review} />
+                        <Review 
+                            key={index} 
+                            review={review} 
+                            updateReviewLikes={updateReviewLikes}
+                        />
                     ))
                 )}
             </div>

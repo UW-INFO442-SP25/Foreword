@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import Review from '../Review/Review';
 import './Account.css';
 
-export default function Account() {
+export default function Account({ reviews = [], updateReviewLikes }) {
     const [error, setError] = useState('');
     const { currentUser, logout } = useAuth();
     const navigate = useNavigate();
@@ -18,6 +19,11 @@ export default function Account() {
             setError('Failed to log out: ' + error.message);
         }
     }
+
+    const userReviews = reviews.filter(review => 
+        review.reviewerId === currentUser?.uid || 
+        review.reviewerEmail === currentUser?.email
+    );
 
     return (
         <div className="account-container">
@@ -35,6 +41,22 @@ export default function Account() {
             <button className="btn-logout" onClick={handleLogout}>
                 Log Out
             </button>
+            <div className="user-reviews-section">
+                <h2>My Reviews</h2>
+                {userReviews.length === 0 ? (
+                    <p className="no-reviews-message">You haven't written any reviews yet.</p>
+                ) : (
+                    <div className="user-reviews-list">
+                        {userReviews.map((review, index) => (
+                            <Review 
+                                key={index} 
+                                review={review} 
+                                updateReviewLikes={updateReviewLikes}
+                            />
+                        ))}
+                    </div>
+                )}
+            </div>
         </div>
     );
 } 
