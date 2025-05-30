@@ -10,49 +10,66 @@
   color: #333;
 }
 
-.search-section {
-  margin-bottom: 2rem;
-}
-
-.search-form {
+/* Users list styles */
+.users-list {
   display: flex;
-  gap: 0.5rem;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.search-input {
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.user-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-avatar-placeholder {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #8c59c0;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.user-info {
   flex: 1;
-  padding: 0.75rem 1rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
 }
 
-.search-button {
-  padding: 0.75rem 1.5rem;
-  background-color: #8c59c0;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
+.user-info h3 {
+  margin: 0 0 0.25rem 0;
+  color: #333;
+  font-size: 1.1rem;
 }
 
-.search-button:hover {
-  background-color: #7b4ea9;
+.user-info p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
 }
 
-.add-friend-button {
-  padding: 0.5rem 1rem;
-  background-color: #8c59c0;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
-}
-
-.add-friend-button:hover {
-  background-color: #7b4ea9;
+/* Message styles */
+.loading-message,
+.no-users-message {
+  text-align: center;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  color: #666;
 }

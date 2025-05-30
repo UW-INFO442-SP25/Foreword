@@ -18,7 +18,19 @@ export default function Navbar() {
                 <Link to="/community">Community</Link>
                 <Link to="/InputBook">Browse Books</Link>
                 {currentUser ? (
-                    <Link to="/account">Account</Link>
+                    <Link to="/account" className="profile-link">
+                        {currentUser.photoURL ? (
+                            <img 
+                                src={currentUser.photoURL} 
+                                alt="Profile" 
+                                className="nav-profile-image" 
+                            />
+                        ) : (
+                            <div className="nav-profile-placeholder">
+                                {currentUser.displayName ? currentUser.displayName[0].toUpperCase() : 'U'}
+                            </div>
+                        )}
+                    </Link>
                 ) : (
                     <Link to="/login">Sign In</Link>
                 )}
