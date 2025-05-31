@@ -30,32 +30,25 @@ function AppContent() {
         setReviews([]);
         return;
       }
-      
+
       try {
         const dbRef = ref(db);
-        const snapshot = await get(child(dbRef, 'users'));
-        
-        if (snapshot.exists()) {
-          const usersData = snapshot.val();
-          let allReviews = [];
-          
-          // collect reviews from all users
-          Object.values(usersData).forEach(user => {
-            if (user.reviews && Array.isArray(user.reviews)) {
-              allReviews = [...allReviews, ...user.reviews];
-            }
-          });
-          
+        const reviewsSnapshot = await get(child(dbRef, 'reviews'));
+
+        if (reviewsSnapshot.exists()) {
+          const reviewsData = reviewsSnapshot.val();
+          const reviewsArray = Object.values(reviewsData);
+
           // sort reviews by newest first
-          allReviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-          
-          setReviews(allReviews);
+          reviewsArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+          setReviews(reviewsArray);
         }
       } catch (error) {
         console.error("Error loading reviews:", error);
       }
     };
-    
+
     loadReviews();
   }, [currentUser]);
 
@@ -64,32 +57,34 @@ function AppContent() {
       console.error("User must be logged in to add a review");
       return;
     }
-    
+
     try {
       const reviewWithId = {
         ...newReview,
-        id: Date.now().toString()
+        id: Date.now().toString(),
+        reviewerId: currentUser.uid
       };
-      
-      // get the current user's data
+
+      // Add review to reviews node
+      const reviewRef = ref(db, `reviews/${reviewWithId.id}`);
+      await set(reviewRef, reviewWithId);
+
+      // Update user's reviewIds array
       const userRef = ref(db, `users/${currentUser.uid}`);
-      const snapshot = await get(userRef);
-      
-      if (snapshot.exists()) {
-        const userData = snapshot.val();
-        // create or update the reviews array
-        const userReviews = userData.reviews ? [...userData.reviews, reviewWithId] : [reviewWithId];
-        
-        // update the user's reviews in the database
-        await update(userRef, { reviews: userReviews });
-        
-        // update state with the new review
-        setReviews(prevReviews => [reviewWithId, ...prevReviews]);
-        
-        console.log("Review added to user's profile:", reviewWithId);
-      } else {
-        console.error("User data not found");
+      const userSnapshot = await get(userRef);
+
+      if (userSnapshot.exists()) {
+        const userData = userSnapshot.val();
+        const userReviews = userData.reviewIds || [];
+        await update(userRef, {
+          reviewIds: [...userReviews, reviewWithId.id]
+        });
       }
+
+      // update state with the new review
+      setReviews(prevReviews => [reviewWithId, ...prevReviews]);
+
+      console.log("Review added successfully:", reviewWithId);
     } catch (error) {
       console.error("Error adding review:", error);
     }

@@ -9,7 +9,7 @@ export default function Home({ reviews = [], updateReviewLikes }) {
             <div className="home-header">
                 <h1>Latest Reviews</h1>
             </div>
-            
+
             {reviews.length === 0 ? (
                 <div className="no-reviews">
                     <p>No reviews yet. Be the first to share your thoughts!</p>
@@ -17,9 +17,11 @@ export default function Home({ reviews = [], updateReviewLikes }) {
             ) : (
                 <div className="reviews-list">
                     {reviews.map((review, index) => (
-                        <Review 
-                            key={index} 
-                            review={review} 
+                        // TODO: Add a check to see if the review is from a public user
+                        // Check
+                        <Review
+                            key={index}
+                            review={review}
                             updateReviewLikes={updateReviewLikes}
                         />
                     ))}
@@ -27,4 +29,4 @@ export default function Home({ reviews = [], updateReviewLikes }) {
             )}
         </div>
     );
-} 
+}

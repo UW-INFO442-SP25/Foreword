@@ -16,11 +16,11 @@ export function AuthProvider({ children }) {
   async function signInWithGoogle() {
     try {
       const result = await signInWithPopup(auth, googleProvider);
-      
+
       if (result.user) {
         await saveUserToDatabase(result.user);
       }
-      
+
       return result;
     } catch (error) {
       console.error("Error signing in with Google:", error);
@@ -30,14 +30,14 @@ export function AuthProvider({ children }) {
 
   async function saveUserToDatabase(user) {
     if (!user) return;
-    
+
     try {
       // reference to user in database
       const userRef = ref(db, 'users/' + user.uid);
-      
+
       // check if user already exists
       const snapshot = await get(userRef);
-      
+
       // if user doesn't exist, add them to database
       if (!snapshot.exists()) {
         await set(userRef, {
@@ -77,4 +77,4 @@ export function AuthProvider({ children }) {
       {!loading && children}
     </AuthContext.Provider>
   );
-} 
+}
