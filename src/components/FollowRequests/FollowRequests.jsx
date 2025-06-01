@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { db } from '../../firebase';
 import { ref, get, set, remove } from 'firebase/database';
+import { getProxiedImageUrl } from '../../utils/imageUtils';
 import './FollowRequests.css';
 
 export default function FollowRequests() {
@@ -88,7 +89,11 @@ export default function FollowRequests() {
                     {requests.map(request => (
                         <div key={request.id} className="request-item">
                             <div className="request-user">
-                                <img src={request.photoURL} alt={request.displayName} className="request-avatar" />
+                                <img 
+                                    src={getProxiedImageUrl(request.photoURL)} 
+                                    alt={request.displayName} 
+                                    className="request-avatar" 
+                                />
                                 <div className="request-info">
                                     <h3>{request.displayName}</h3>
                                     <p>{request.email}</p>

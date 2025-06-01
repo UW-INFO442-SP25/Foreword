@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { getProxiedImageUrl } from '../../utils/imageUtils';
 import './Navbar.css';
 import forewordLogo from '../../imgs/foreword-logo.png';
 
@@ -21,7 +22,7 @@ export default function Navbar() {
                     <Link to="/account" className="profile-link">
                         {currentUser.photoURL ? (
                             <img 
-                                src={currentUser.photoURL} 
+                                src={getProxiedImageUrl(currentUser.photoURL)} 
                                 alt="Profile" 
                                 className="nav-profile-image" 
                             />

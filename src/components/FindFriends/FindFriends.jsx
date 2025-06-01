@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { db } from '../../firebase';
 import { ref, get, child } from 'firebase/database';
 import { useAuth } from '../../contexts/AuthContext';
+import { getProxiedImageUrl } from '../../utils/imageUtils';
 import './FindFriends.css';
 
 export default function FindFriends() {
@@ -54,7 +55,7 @@ export default function FindFriends() {
                         <div key={user.uid} className="user-card">
                             {user.photoURL ? (
                                 <img 
-                                    src={user.photoURL} 
+                                    src={getProxiedImageUrl(user.photoURL)} 
                                     alt={`${user.displayName || 'User'}'s profile`} 
                                     className="user-avatar" 
                                 />

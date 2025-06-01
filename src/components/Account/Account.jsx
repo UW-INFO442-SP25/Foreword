@@ -5,6 +5,7 @@ import { db } from '../../firebase';
 import { ref, onValue, set, get } from 'firebase/database';
 import Review from '../Review/Review';
 import FollowRequests from '../FollowRequests/FollowRequests';
+import { getProxiedImageUrl } from '../../utils/imageUtils';
 import './Account.css';
 
 export default function Account({ updateReviewLikes }) {
@@ -80,7 +81,11 @@ export default function Account({ updateReviewLikes }) {
             {error && <div className="error">{error}</div>}
             <div className="profile-card">
                 <div className="user-info">
-                    <img src={currentUser?.photoURL} alt="Profile" className="avatar" />
+                    <img 
+                        src={getProxiedImageUrl(currentUser?.photoURL)} 
+                        alt="Profile" 
+                        className="avatar" 
+                    />
                     <div>
                         <h2>{currentUser?.displayName}</h2>
                         <p>{currentUser?.email}</p>

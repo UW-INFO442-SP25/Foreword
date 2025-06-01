@@ -3,6 +3,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { db } from '../../firebase';
 import { ref, get, remove } from 'firebase/database';
 import { Link } from 'react-router-dom';
+import { getProxiedImageUrl } from '../../utils/imageUtils';
 import './FollowLists.css';
 
 export default function FollowLists({ userId, isOwnProfile }) {
@@ -130,7 +131,11 @@ export default function FollowLists({ userId, isOwnProfile }) {
                             {followers.map(user => (
                                 <div key={user.id} className="user-item">
                                     <Link to={`/user/${user.id}`} className="user-info">
-                                        <img src={user.photoURL} alt={user.displayName} className="user-avatar" />
+                                        <img 
+                                            src={getProxiedImageUrl(user.photoURL)} 
+                                            alt={user.displayName} 
+                                            className="user-avatar"
+                                        />
                                         <div>
                                             <h3>{user.displayName}</h3>
                                             <p>{user.email}</p>
@@ -156,7 +161,11 @@ export default function FollowLists({ userId, isOwnProfile }) {
                             {following.map(user => (
                                 <div key={user.id} className="user-item">
                                     <Link to={`/user/${user.id}`} className="user-info">
-                                        <img src={user.photoURL} alt={user.displayName} className="user-avatar" />
+                                        <img 
+                                            src={getProxiedImageUrl(user.photoURL)} 
+                                            alt={user.displayName} 
+                                            className="user-avatar"
+                                        />
                                         <div>
                                             <h3>{user.displayName}</h3>
                                             <p>{user.email}</p>

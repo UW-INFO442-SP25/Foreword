@@ -6,6 +6,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import Review from '../Review/Review';
 import FollowSystem from '../FollowSystem/FollowSystem';
 import FollowLists from '../FollowLists/FollowLists';
+import { getProxiedImageUrl } from '../../utils/imageUtils';
 import './UserProfile.css';
 
 export default function UserProfile() {
@@ -67,7 +68,11 @@ export default function UserProfile() {
             <h1>User Profile</h1>
             <div className="profile-card">
                 <div className="user-info">
-                    <img src={userData.photoURL} alt="Profile" className="avatar" />
+                    <img 
+                        src={getProxiedImageUrl(userData.photoURL)} 
+                        alt="Profile" 
+                        className="avatar" 
+                    />
                     <div>
                         <h2>{userData.displayName}</h2>
                         <p>{userData.email}</p>
