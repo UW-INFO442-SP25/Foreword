@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { db } from '../../firebase';
 import { ref, onValue, set, get } from 'firebase/database';
 import Review from '../Review/Review';
+import FollowRequests from '../FollowRequests/FollowRequests';
 import './Account.css';
 
 export default function Account({ updateReviewLikes }) {
@@ -102,6 +103,9 @@ export default function Account({ updateReviewLikes }) {
             <button className="btn-logout" onClick={handleLogout}>
                 Log Out
             </button>
+
+            <FollowRequests />
+
             <div className="user-reviews-section">
                 <h2>My Reviews</h2>
                 {userReviews.length === 0 ? (

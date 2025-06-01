@@ -18,6 +18,7 @@ import Community from './components/Community/Community';
 import InputBook from './components/InputBook/InputBook';
 import BookDetail from './components/BookDetail/BookDetail';
 import FindFriends from './components/FindFriends/FindFriends';
+import UserProfile from './components/UserProfile/UserProfile';
 
 function AppContent() {
   const [reviews, setReviews] = useState([]);
@@ -124,6 +125,7 @@ function AppContent() {
             <Route path="/settings" element={<Settings />} />
             <Route path="/community" element={<Community reviews={reviews} />} />
             <Route path="/findfriends" element={<FindFriends />} />
+            <Route path="/user/:userId" element={<UserProfile />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </main>
