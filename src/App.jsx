@@ -66,7 +66,7 @@ function AppContent() {
 
   const addReview = async (newReview) => {
     if (!currentUser) {
-      console.error("User must be logged in to add a review");
+      alert("User must be logged in to add a review");
       return;
     }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { getProxiedImageUrl } from '../../utils/imageUtils';
@@ -7,6 +7,15 @@ import forewordLogo from '../../imgs/foreword-logo.png';
 
 export default function Navbar() {
     const { currentUser } = useAuth();
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
+
+    const closeDropdown = () => {
+        setIsDropdownOpen(false);
+    };
 
     return (
         <div className="navbar">
@@ -14,7 +23,28 @@ export default function Navbar() {
                 <img src={forewordLogo} alt="Foreword" className="navbar-logo" />
             </Link>
             
-            <nav>
+            <div className="hamburger-menu" onClick={toggleDropdown}>
+                <div className="hamburger-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+
+            {isDropdownOpen && (
+                <div className="dropdown-menu">
+                    <Link to="/home" onClick={closeDropdown}>Home</Link>
+                    <Link to="/community" onClick={closeDropdown}>Community</Link>
+                    <Link to="/InputBook" onClick={closeDropdown}>Browse Books</Link>
+                    {currentUser ? (
+                        <Link to="/account" onClick={closeDropdown}>Profile</Link>
+                    ) : (
+                        <Link to="/login" onClick={closeDropdown}>Sign In</Link>
+                    )}
+                </div>
+            )}
+            
+            <nav className="nav-links">
                 <Link to="/home">Home</Link>
                 <Link to="/community">Community</Link>
                 <Link to="/InputBook">Browse Books</Link>
