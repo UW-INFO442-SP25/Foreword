@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './InputBook.css';
+
+let debounceTimer;
+const genres = ['Fantasy', 'Science Fiction', 'Romance', 'Mystery', 'Horror', 'Nonfiction'];
+
 
 const InputBook = () => {
   const [keyword, setKeyword] = useState('');
@@ -8,19 +12,22 @@ const InputBook = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setKeyword(e.target.value);
-  }
+  useEffect(() => {
+    if (keyword.trim() === '') return;
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      fetchBooks(keyword);
+    }, 100);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    return () => clearTimeout(debounceTimer);
+  }, [keyword]);
+
+  const fetchBooks = async (query) => {
     setLoading(true);
-
     try {
-      const response = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(keyword)}`);
+      const response = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(query)}`);
       const data = await response.json();
 
-      // Transform the data to include cover image URLs and work IDs
       const booksWithCovers = data.docs.map(book => ({
         ...book,
         coverUrl: book.cover_i ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg` : null,
@@ -33,19 +40,41 @@ const InputBook = () => {
     } finally {
       setLoading(false);
     }
-  }
+  };
+
+  const handleChange = (e) => {
+    setKeyword(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (keyword.trim() !== '') {
+      fetchBooks(keyword);
+    }
+  };
 
   const handleBookClick = (book) => {
-    // Extract work ID from the book key
     const workId = book.key.split('/').pop();
-    if (workId) {
-      navigate(`/book/${workId}`);
-    }
-  }
+    if (workId) navigate(`/book/${workId}`);
+  };
 
   return (
     <div className="container">
       <h1 className="text-2xl mb-4">Search Books</h1>
+      <div className="mb-4">
+        <p className="mb-2 font-semibold">Browse by genre:</p>
+        <div className="flex flex-wrap gap-2">
+          {genres.map((genre) => (
+            <button
+              key={genre}
+              onClick={() => fetchBooks(genre)}
+              className="genre-button"
+            >
+              {genre}
+            </button>
+          ))}
+        </div>
+      </div>
       <form onSubmit={handleSubmit} className="mb-6">
         <div className="flex gap-2">
           <input
@@ -95,7 +124,7 @@ const InputBook = () => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default InputBook; 
+export default InputBook;

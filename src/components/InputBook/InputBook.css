@@ -120,6 +120,21 @@
   color: #6b7280;
 }
 
+.genre-button {
+  background-color: #e5e7eb;
+  color: #1f2937;
+  padding: 6px 14px;
+  font-size: 0.875rem;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.genre-button:hover {
+  background-color: #d1d5db;
+}
+
 @media (min-width: 768px) {
   .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -130,4 +145,4 @@
   .lg\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-} 
+}
