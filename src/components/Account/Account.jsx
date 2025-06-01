@@ -28,9 +28,11 @@ export default function Account({ updateReviewLikes }) {
                         const reviewsSnapshot = await get(reviewsRef);
                         if (reviewsSnapshot.exists()) {
                             const allReviews = reviewsSnapshot.val();
+                            // Get all reviews by this user, regardless of public status
                             const userReviewsList = data.reviewIds
                                 .map(id => allReviews[id])
-                                .filter(review => review); // Filter out any undefined reviews
+                                .filter(review => review) // Filter out any undefined reviews
+                                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Sort by newest first
                             setUserReviews(userReviewsList);
                         }
                     }
@@ -63,7 +65,8 @@ export default function Account({ updateReviewLikes }) {
                 email: currentUser.email,
                 photoURL: currentUser.photoURL,
                 uid: currentUser.uid,
-                public: !isPublic
+                public: !isPublic,
+                reviewIds: userReviews.map(review => review.id) // Preserve review IDs
             });
         } catch (error) {
             setError('Failed to update privacy settings: ' + error.message);

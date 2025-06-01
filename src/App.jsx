@@ -33,11 +33,22 @@ function AppContent() {
 
       try {
         const dbRef = ref(db);
-        const reviewsSnapshot = await get(child(dbRef, 'reviews'));
+        // Get both reviews and users data
+        const [reviewsSnapshot, usersSnapshot] = await Promise.all([
+          get(child(dbRef, 'reviews')),
+          get(child(dbRef, 'users'))
+        ]);
 
-        if (reviewsSnapshot.exists()) {
+        if (reviewsSnapshot.exists() && usersSnapshot.exists()) {
           const reviewsData = reviewsSnapshot.val();
-          const reviewsArray = Object.values(reviewsData);
+          const usersData = usersSnapshot.val();
+
+          // Filter reviews to only include those from public users
+          const reviewsArray = Object.values(reviewsData).filter(review => {
+            const reviewer = usersData[review.reviewerId];
+            // Include review if reviewer is public or if it's the current user's review
+            return reviewer?.public || review.reviewerId === currentUser.uid;
+          });
 
           // sort reviews by newest first
           reviewsArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
