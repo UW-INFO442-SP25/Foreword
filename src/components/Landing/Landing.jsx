@@ -4,9 +4,7 @@ import { Link } from 'react-router-dom';
 
 import forewordLogo from '../../imgs/foreword-logo.png';
 import signUpImg from '../../imgs/Sign-up.png';
-import googleLogo from '../../imgs/Google-logo.svg';
 import reviewPage from '../../imgs/review-page.png';
-import writePage from '../../imgs/write-page.png';
 import communityPage from '../../imgs/community-page.png';
 import searchPage from '../../imgs/search-page.png';
 
@@ -25,9 +23,7 @@ export default function Landing() {
         <h1 className="hero-title">Reading, better together</h1>
         <p className="subtitle">Rate your reads and join the conversation</p>
         <div className="cta-buttons">
-          <button className="google-btn">
-            <img src={googleLogo} alt="Google logo" /> Continue with Google
-          </button>
+            <Link to="/account" className="cta-about">Sign Up</Link>
             <Link to="/about" className="cta-about">About Us</Link>
             <button className="cta-secondary" onClick={scrollToContent}>Learn more</button>
 
