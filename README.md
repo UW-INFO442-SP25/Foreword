@@ -6,25 +6,18 @@ Our mission is to foster a culture of lifelong learning and critical thinking by
 
 ## Features
 
-### P0: highest priority feature / must have
+
 * Log in / create an account through Google Authentication
-* Posting ratings (0.0 - 10.0), can also like/dislike and comment on friends’ posts (feed)
-* Be able to add friends
-* Search for books (title, author, ISBN)
-* Public/private account 
-* Referral link (create false scarcity, ethically)
+* Post ratings (0.0 - 10.0) and reviews for specific books
+* Search for books (title, author, genre)
+* Add friends
+* Set account to public/private 
+* Achieve review streaks
 
-### P1: medium priority feature / should probably have
-* Recommend books
-* Previously read
-* Want to read
-* Leaderboard (books read & friends invited)
-
-### P2: lowest priority feature / nice to have
-* Streaks
-* Trending books
-* Interest groups
-
+## Personas
+Our personas used for development can be found here:
+* [Jordan Kim](src/imgs/jordan-kim-persona.png)
+* [Olivia Anderson](src/imgs/olivia-anderson-persona.png)
 
 ## Published Site
 
@@ -39,6 +32,10 @@ Our mission is to foster a culture of lifelong learning and critical thinking by
 * Bookshare API
 
 ## Testing Protocols
+Key features
+Posting ratings
+Public/private
+Friends
 
 ## Known Bugs
 
