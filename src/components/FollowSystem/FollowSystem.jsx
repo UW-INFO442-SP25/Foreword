@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { db } from '../../firebase';
-import { ref, get, set, update, remove } from 'firebase/database';
+import { ref, get, set, remove } from 'firebase/database';
 import './FollowSystem.css';
 
 export default function FollowSystem({ targetUserId, isPublic }) {

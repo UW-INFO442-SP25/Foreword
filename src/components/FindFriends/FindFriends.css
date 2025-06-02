@@ -26,6 +26,14 @@
   border-radius: 8px;
   background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.user-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .user-avatar {
@@ -66,10 +74,22 @@
 
 /* Message styles */
 .loading-message,
-.no-users-message {
+.no-users-message,
+.error-message {
   text-align: center;
   padding: 2rem;
   background-color: #f8f9fa;
   border-radius: 8px;
   color: #666;
+  margin-top: 2rem;
+}
+
+.loading-message {
+  font-style: italic;
+}
+
+.error-message {
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
 }

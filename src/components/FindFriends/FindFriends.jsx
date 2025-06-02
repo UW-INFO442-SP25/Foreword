@@ -3,61 +3,108 @@ import { db } from '../../firebase';
 import { ref, get, child } from 'firebase/database';
 import { useAuth } from '../../contexts/AuthContext';
 import { getProxiedImageUrl } from '../../utils/imageUtils';
+import { Link } from 'react-router-dom';
 import './FindFriends.css';
 
 export default function FindFriends() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
     const { currentUser } = useAuth();
 
     useEffect(() => {
         async function fetchUsers() {
+            if (!currentUser) {
+                setLoading(false);
+                return;
+            }
+
             try {
                 setLoading(true);
                 const dbRef = ref(db);
-                const snapshot = await get(child(dbRef, 'users'));
-                
-                if (snapshot.exists()) {
-                    const usersData = snapshot.val();
-                    const usersArray = Object.values(usersData);
-                    
-                    // filter out the current user
-                    const filteredUsers = usersArray.filter(user => 
-                        user.uid !== currentUser?.uid
-                    );
-                    
-                    setUsers(filteredUsers);
+
+                // Get all users and following data in parallel
+                const [usersSnapshot, followingSnapshot] = await Promise.all([
+                    get(child(dbRef, 'users')),
+                    get(child(dbRef, `follows/${currentUser.uid}`))
+                ]);
+
+                if (usersSnapshot.exists()) {
+                    const usersData = usersSnapshot.val();
+                    const followingData = followingSnapshot.exists() ? followingSnapshot.val() : {};
+                    const followingIds = Object.keys(followingData);
+
+                    const usersArray = Object.entries(usersData)
+                        .filter(([uid, user]) =>
+                            // Filter out current user, private accounts, and users already being followed
+                            uid !== currentUser?.uid &&
+                            user.public &&
+                            !followingIds.includes(uid)
+                        )
+                        .map(([uid, user]) => ({
+                            uid,
+                            ...user
+                        }));
+
+                    setUsers(usersArray);
                 } else {
                     console.log("No users found in database");
                     setUsers([]);
                 }
             } catch (error) {
                 console.error("Error fetching users:", error);
+                setError('Error loading users. Please try again later.');
             } finally {
                 setLoading(false);
             }
         }
-        
+
         fetchUsers();
     }, [currentUser]);
+
+    if (loading) {
+        return (
+            <div className="find-friends-container">
+                <h1>Find Friends</h1>
+                <div className="loading-message">Loading users...</div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="find-friends-container">
+                <h1>Find Friends</h1>
+                <div className="error-message">{error}</div>
+            </div>
+        );
+    }
 
     return (
         <div className="find-friends-container">
             <h1>Find Friends</h1>
 
-            {loading ? (
-                <p className="loading-message">Loading users...</p>
-            ) : users.length === 0 ? (
-                <p className="no-users-message">No other users found.</p>
+            {users.length === 0 ? (
+                <div className="no-users-message">
+                    {!currentUser ? (
+                        <p>Log in to find friends</p>
+                    ) : (
+                        <p>No new users to follow. Check back later!</p>
+                    )}
+                </div>
             ) : (
                 <div className="users-list">
                     {users.map(user => (
-                        <div key={user.uid} className="user-card">
+                        <Link
+                            to={`/user/${user.uid}`}
+                            key={user.uid}
+                            className="user-card"
+                        >
                             {user.photoURL ? (
-                                <img 
-                                    src={getProxiedImageUrl(user.photoURL)} 
-                                    alt={`${user.displayName || 'User'}'s profile`} 
-                                    className="user-avatar" 
+                                <img
+                                    src={getProxiedImageUrl(user.photoURL)}
+                                    alt={`${user.displayName || 'User'}'s profile`}
+                                    className="user-avatar"
                                 />
                             ) : (
                                 <div className="user-avatar-placeholder">
@@ -68,7 +115,7 @@ export default function FindFriends() {
                                 <h3>{user.displayName || 'Anonymous User'}</h3>
                                 <p>{user.email}</p>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             )}

@@ -4,6 +4,7 @@ import './Review.css';
 
 export default function Review({ review }) {
     const {
+        id,
         bookTitle,
         author,
         rating,
@@ -11,7 +12,8 @@ export default function Review({ review }) {
         createdAt,
         reviewerName = 'Anonymous',
         coverUrl,
-        reviewerId
+        reviewerId,
+        likes = {}
     } = review;
 
     const formatDate = (timestamp) => {
@@ -20,49 +22,56 @@ export default function Review({ review }) {
     };
 
     const formattedRating = typeof rating === 'number' ? rating.toFixed(1) : rating;
+    const likeCount = Object.keys(likes).length;
 
     return (
-        <div className="review-item">
-            <div className="review-cover">
-                {coverUrl ? (
-                    <img
-                        src={coverUrl}
-                        alt={`Cover for ${bookTitle}`}
-                        className="book-cover-image"
-                    />
-                ) : (
-                    <div className="book-cover-placeholder">
-                        No Cover
-                    </div>
-                )}
-            </div>
-
-            <div className="review-content">
-                <div className="review-rating">
-                    <span className="rating-number">{formattedRating}</span>
+        <Link to={`/review/${id}`} className="review-link">
+            <div className="review-item">
+                <div className="review-cover">
+                    {coverUrl ? (
+                        <img
+                            src={coverUrl}
+                            alt={`Cover for ${bookTitle}`}
+                            className="book-cover-image"
+                        />
+                    ) : (
+                        <div className="book-cover-placeholder">
+                            No Cover
+                        </div>
+                    )}
                 </div>
 
-                <h2 className="review-title">{bookTitle}</h2>
-                <p className="review-author">by {author}</p>
+                <div className="review-content">
+                    <div className="review-rating">
+                        <span className="rating-number">{formattedRating}</span>
+                    </div>
 
+                    <h2 className="review-title">{bookTitle}</h2>
+                    <p className="review-author">by {author}</p>
 
-                <p className="review-text">{reviewText}</p>
+                    <p className="review-text">{reviewText}</p>
 
-                <div className="review-footer">
-                    <div className="reviewer-info">
-                        <div className="reviewer-name">
-                            Review by {reviewerId ? (
-                                <Link to={`/user/${reviewerId}`} className="reviewer-link">
-                                    {reviewerName}
-                                </Link>
-                            ) : reviewerName}
+                    <div className="review-footer">
+                        <div className="reviewer-info">
+                            <div className="reviewer-name">
+                                Review by {reviewerId ? (
+                                    <Link to={`/user/${reviewerId}`} className="reviewer-link" onClick={(e) => e.stopPropagation()}>
+                                        {reviewerName}
+                                    </Link>
+                                ) : reviewerName}
+                            </div>
+                            <div className="review-date">
+                                Posted on {formatDate(createdAt)}
+                            </div>
                         </div>
-                        <div className="review-date">
-                            Posted on {formatDate(createdAt)}
-                        </div>
+                        {likeCount > 0 && (
+                            <div className="review-likes">
+                                ❤️ {likeCount}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }

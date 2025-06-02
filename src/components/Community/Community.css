@@ -3,7 +3,7 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: left;
-} 
+}
 
 .community-header {
   display: flex;
@@ -50,4 +50,24 @@
   border-radius: 8px;
   color: #666;
   margin-top: 2rem;
+}
+
+.loading-message {
+  text-align: center;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  color: #666;
+  margin-top: 2rem;
+  font-style: italic;
+}
+
+.error-message {
+  text-align: center;
+  padding: 2rem;
+  background: #fee2e2;
+  border-radius: 8px;
+  color: #dc2626;
+  margin-top: 2rem;
+  border: 1px solid #fecaca;
 }

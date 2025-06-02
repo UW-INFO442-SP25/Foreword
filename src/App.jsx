@@ -19,84 +19,84 @@ import InputBook from './components/InputBook/InputBook';
 import BookDetail from './components/BookDetail/BookDetail';
 import FindFriends from './components/FindFriends/FindFriends';
 import UserProfile from './components/UserProfile/UserProfile';
+import ReviewDetail from './components/ReviewDetail/ReviewDetail';
 
 function AppContent() {
   const [reviews, setReviews] = useState([]);
   const { currentUser } = useAuth();
 
+  const updateDailyStreak = async () => {
+    if (!currentUser) return;
+
+    const userRef = ref(db, `users/${currentUser.uid}`);
+    const snapshot = await get(userRef);
+
+    if (!snapshot.exists()) return;
+
+    const userData = snapshot.val();
+    const last = userData.lastActivityDate;
+    const streak = userData.streakCount || 0;
+
+    const today = new Date().toISOString().split('T')[0];
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yDay = yesterday.toISOString().split('T')[0];
+
+    let newStreak = 1;
+    if (last === today) return; // already updated today
+    else if (last === yDay) newStreak = streak + 1;
+
+    await update(userRef, {
+      lastActivityDate: today,
+      streakCount: newStreak
+    });
+
+    console.log(`Streak updated: ${newStreak} days`);
+  };
+
   // load reviews from database when user logs in
   useEffect(() => {
     const loadReviews = async () => {
-    if (!currentUser) {
-      setReviews([]);
-      return;
-    }
-
-    try {
-      const dbRef = ref(db);
-      const [reviewsSnapshot, usersSnapshot] = await Promise.all([
-        get(child(dbRef, 'reviews')),
-        get(child(dbRef, 'users'))
-      ]);
-
-      if (reviewsSnapshot.exists() && usersSnapshot.exists()) {
-        const reviewsData = reviewsSnapshot.val();
-        const usersData = usersSnapshot.val();
-
-        const reviewsArray = Object.values(reviewsData).filter(review => {
-          const reviewer = usersData[review.reviewerId];
-          return reviewer?.public;
-        });
-
-        reviewsArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        setReviews(reviewsArray);
+      if (!currentUser) {
+        setReviews([]);
+        return;
       }
 
-      // ✅ Update streak
-      await updateDailyStreak();
+      try {
+        const dbRef = ref(db);
+        const [reviewsSnapshot, usersSnapshot] = await Promise.all([
+          get(child(dbRef, 'reviews')),
+          get(child(dbRef, 'users'))
+        ]);
 
-    } catch (error) {
-      console.error("Error loading reviews:", error);
-    }
-  };
+        if (reviewsSnapshot.exists() && usersSnapshot.exists()) {
+          const reviewsData = reviewsSnapshot.val();
+          const usersData = usersSnapshot.val();
+
+          const reviewsArray = Object.values(reviewsData).filter(review => {
+            const reviewer = usersData[review.reviewerId];
+            return reviewer?.public;
+          });
+
+          reviewsArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          setReviews(reviewsArray);
+        }
+
+        // ✅ Update streak
+        await updateDailyStreak();
+
+      } catch (error) {
+        console.error("Error loading reviews:", error);
+      }
+    };
     loadReviews();
-}, [currentUser]);
+  }, [currentUser]);
 
   const addReview = async (newReview) => {
     if (!currentUser) {
       alert("User must be logged in to add a review");
       return;
     }
-
-  const updateDailyStreak = async () => {
-  if (!currentUser) return;
-
-  const userRef = ref(db, `users/${currentUser.uid}`);
-  const snapshot = await get(userRef);
-
-  if (!snapshot.exists()) return;
-
-  const userData = snapshot.val();
-  const last = userData.lastActivityDate;
-  const streak = userData.streakCount || 0;
-
-  const today = new Date().toISOString().split('T')[0];
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  const yDay = yesterday.toISOString().split('T')[0];
-
-  let newStreak = 1;
-  if (last === today) return; // already updated today
-  else if (last === yDay) newStreak = streak + 1;
-
-  await update(userRef, {
-    lastActivityDate: today,
-    streakCount: newStreak
-  });
-
-  console.log(`Streak updated: ${newStreak} days`);
-  };
-
 
     try {
       const reviewWithId = {
@@ -144,6 +144,7 @@ function AppContent() {
             <Route path="/CreateReview" element={<CreateReview addReview={addReview} />} />
             <Route path="/InputBook" element={<InputBook />} />
             <Route path="/book/:bookId" element={<BookDetail reviews={reviews} />} />
+            <Route path="/review/:reviewId" element={<ReviewDetail />} />
             <Route path="/account" element={
               <PrivateRoute>
                 <Account reviews={reviews} />
