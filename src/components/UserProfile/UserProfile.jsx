@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { db } from '../../firebase';
 import { ref, get } from 'firebase/database';
 import { useAuth } from '../../contexts/AuthContext';
@@ -15,6 +15,7 @@ export default function UserProfile() {
     const [userReviews, setUserReviews] = useState([]);
     const { userId } = useParams();
     const { currentUser } = useAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const loadUserData = async () => {
@@ -25,6 +26,11 @@ export default function UserProfile() {
                 if (!userSnapshot.exists()) {
                     setError('User not found');
                     return;
+                }
+
+                // if the user is the same as the current user, redirect to profile page
+                if (userSnapshot.val().uid === currentUser.uid) {
+                    navigate('/account');
                 }
 
                 const data = userSnapshot.val();
@@ -68,10 +74,10 @@ export default function UserProfile() {
             <h1>User Profile</h1>
             <div className="profile-card">
                 <div className="user-info">
-                    <img 
-                        src={getProxiedImageUrl(userData.photoURL)} 
-                        alt="Profile" 
-                        className="avatar" 
+                    <img
+                        src={getProxiedImageUrl(userData.photoURL)}
+                        alt="Profile"
+                        className="avatar"
                     />
                     <div>
                         <h2>{userData.displayName}</h2>
