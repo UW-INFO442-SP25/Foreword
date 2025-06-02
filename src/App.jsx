@@ -11,7 +11,6 @@ import Login from './components/Login/Login';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import { AuthProvider } from './contexts/AuthContext';
 import Landing from './components/Landing/Landing';
-import Settings from './components/Settings/Settings';
 import Home from './components/Home/Home';
 import CreateReview from './components/CreateReview/CreateReview';
 import Community from './components/Community/Community';
@@ -161,7 +160,6 @@ function AppContent() {
               </PrivateRoute>
             } />
             <Route path="/login" element={<Login />} />
-            <Route path="/settings" element={<Settings />} />
             <Route path="/community" element={<Community reviews={reviews} currentUser={currentUser} />} />
             <Route path="/findfriends" element={<FindFriends />} />
             <Route path="/user/:userId" element={<UserProfile />} />
