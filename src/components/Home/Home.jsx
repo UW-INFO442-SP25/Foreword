@@ -21,8 +21,7 @@ export default function Home({ reviews = [], updateReviewLikes, currentUser }) {
             ) : (
                 <div className="reviews-list">
                     {reviews.map((review, index) => (
-                        // TODO: Add a check to see if the review is from a public user
-                        // Check
+
                         <Review
                             key={index}
                             review={review}

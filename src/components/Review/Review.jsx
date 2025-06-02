@@ -1,17 +1,19 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Review.css';
 
 export default function Review({ review }) {
-    const { 
-        bookTitle, 
-        author, 
-        rating, 
-        reviewText, 
-        createdAt, 
+    const {
+        bookTitle,
+        author,
+        rating,
+        reviewText,
+        createdAt,
         reviewerName = 'Anonymous',
-        coverUrl
+        coverUrl,
+        reviewerId
     } = review;
-    
+
     const formatDate = (timestamp) => {
         const date = new Date(timestamp);
         return date.toLocaleDateString();
@@ -23,10 +25,10 @@ export default function Review({ review }) {
         <div className="review-item">
             <div className="review-cover">
                 {coverUrl ? (
-                    <img 
-                        src={coverUrl} 
-                        alt={`Cover for ${bookTitle}`} 
-                        className="book-cover-image" 
+                    <img
+                        src={coverUrl}
+                        alt={`Cover for ${bookTitle}`}
+                        className="book-cover-image"
                     />
                 ) : (
                     <div className="book-cover-placeholder">
@@ -34,21 +36,26 @@ export default function Review({ review }) {
                     </div>
                 )}
             </div>
-            
+
             <div className="review-content">
                 <div className="review-rating">
                     <span className="rating-number">{formattedRating}</span>
                 </div>
-                
+
                 <h2 className="review-title">{bookTitle}</h2>
                 <p className="review-author">by {author}</p>
-                
+
+
                 <p className="review-text">{reviewText}</p>
-                
+
                 <div className="review-footer">
                     <div className="reviewer-info">
                         <div className="reviewer-name">
-                            Review by {reviewerName}
+                            Review by {reviewerId ? (
+                                <Link to={`/user/${reviewerId}`} className="reviewer-link">
+                                    {reviewerName}
+                                </Link>
+                            ) : reviewerName}
                         </div>
                         <div className="review-date">
                             Posted on {formatDate(createdAt)}
@@ -58,4 +65,4 @@ export default function Review({ review }) {
             </div>
         </div>
     );
-} 
+}

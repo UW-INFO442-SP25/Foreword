@@ -45,7 +45,7 @@ function AppContent() {
 
         const reviewsArray = Object.values(reviewsData).filter(review => {
           const reviewer = usersData[review.reviewerId];
-          return reviewer?.public || review.reviewerId === currentUser.uid;
+          return reviewer?.public;
         });
 
         reviewsArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
