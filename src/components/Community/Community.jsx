@@ -3,7 +3,7 @@ import Review from '../Review/Review';
 import './Community.css';
 import { Link } from 'react-router-dom';
 
-export default function Community({ reviews = [], updateReviewLikes }) {
+export default function Community({ reviews = [], updateReviewLikes, currentUser }) {
     return (
         <div className="community-container">
             <div className="community-header">
@@ -15,7 +15,11 @@ export default function Community({ reviews = [], updateReviewLikes }) {
             </div>
             {reviews.length === 0 ? (
                 <div className="no-reviews">
-                    <p>No reviews yet. Be the first to share your thoughts!</p>
+                    {!currentUser ? (
+                        <p>Log in to access Foreword</p>
+                    ) : (
+                        <p>No reviews yet. Be the first to share your thoughts!</p>
+                    )}
                 </div>
             ) : (
                 <div className="reviews-list">

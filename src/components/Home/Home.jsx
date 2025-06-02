@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Review from '../Review/Review';
 import './Home.css';
 
-export default function Home({ reviews = [], updateReviewLikes }) {
+export default function Home({ reviews = [], updateReviewLikes, currentUser }) {
     return (
         <div className="home-container">
             <div className="home-header">
@@ -12,7 +12,11 @@ export default function Home({ reviews = [], updateReviewLikes }) {
 
             {reviews.length === 0 ? (
                 <div className="no-reviews">
-                    <p>No reviews yet. Be the first to share your thoughts!</p>
+                    {!currentUser ? (
+                        <p>Log in to access Foreword</p>
+                    ) : (
+                        <p>No reviews yet. Be the first to share your thoughts!</p>
+                    )}
                 </div>
             ) : (
                 <div className="reviews-list">

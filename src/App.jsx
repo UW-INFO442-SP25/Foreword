@@ -140,7 +140,7 @@ function AppContent() {
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/about" element={<About />} />
-            <Route path="/home" element={<Home reviews={reviews} />} />
+            <Route path="/home" element={<Home reviews={reviews} currentUser={currentUser} />} />
             <Route path="/CreateReview" element={<CreateReview addReview={addReview} />} />
             <Route path="/InputBook" element={<InputBook />} />
             <Route path="/book/:bookId" element={<BookDetail reviews={reviews} />} />
@@ -151,7 +151,7 @@ function AppContent() {
             } />
             <Route path="/login" element={<Login />} />
             <Route path="/settings" element={<Settings />} />
-            <Route path="/community" element={<Community reviews={reviews} />} />
+            <Route path="/community" element={<Community reviews={reviews} currentUser={currentUser} />} />
             <Route path="/findfriends" element={<FindFriends />} />
             <Route path="/user/:userId" element={<UserProfile />} />
             <Route path="*" element={<Navigate to="/" />} />
