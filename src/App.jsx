@@ -27,48 +27,76 @@ function AppContent() {
   // load reviews from database when user logs in
   useEffect(() => {
     const loadReviews = async () => {
-      if (!currentUser) {
-        setReviews([]);
-        return;
+    if (!currentUser) {
+      setReviews([]);
+      return;
+    }
+
+    try {
+      const dbRef = ref(db);
+      const [reviewsSnapshot, usersSnapshot] = await Promise.all([
+        get(child(dbRef, 'reviews')),
+        get(child(dbRef, 'users'))
+      ]);
+
+      if (reviewsSnapshot.exists() && usersSnapshot.exists()) {
+        const reviewsData = reviewsSnapshot.val();
+        const usersData = usersSnapshot.val();
+
+        const reviewsArray = Object.values(reviewsData).filter(review => {
+          const reviewer = usersData[review.reviewerId];
+          return reviewer?.public || review.reviewerId === currentUser.uid;
+        });
+
+        reviewsArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setReviews(reviewsArray);
       }
 
-      try {
-        const dbRef = ref(db);
-        // Get both reviews and users data
-        const [reviewsSnapshot, usersSnapshot] = await Promise.all([
-          get(child(dbRef, 'reviews')),
-          get(child(dbRef, 'users'))
-        ]);
+      // ✅ Update streak
+      await updateDailyStreak();
 
-        if (reviewsSnapshot.exists() && usersSnapshot.exists()) {
-          const reviewsData = reviewsSnapshot.val();
-          const usersData = usersSnapshot.val();
-
-          // Filter reviews to only include those from public users
-          const reviewsArray = Object.values(reviewsData).filter(review => {
-            const reviewer = usersData[review.reviewerId];
-            // Include review if reviewer is public or if it's the current user's review
-            return reviewer?.public || review.reviewerId === currentUser.uid;
-          });
-
-          // sort reviews by newest first
-          reviewsArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-          setReviews(reviewsArray);
-        }
-      } catch (error) {
-        console.error("Error loading reviews:", error);
-      }
-    };
-
+    } catch (error) {
+      console.error("Error loading reviews:", error);
+    }
+  };
     loadReviews();
-  }, [currentUser]);
+}, [currentUser]);
 
   const addReview = async (newReview) => {
     if (!currentUser) {
       alert("User must be logged in to add a review");
       return;
     }
+
+  const updateDailyStreak = async () => {
+  if (!currentUser) return;
+
+  const userRef = ref(db, `users/${currentUser.uid}`);
+  const snapshot = await get(userRef);
+
+  if (!snapshot.exists()) return;
+
+  const userData = snapshot.val();
+  const last = userData.lastActivityDate;
+  const streak = userData.streakCount || 0;
+
+  const today = new Date().toISOString().split('T')[0];
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yDay = yesterday.toISOString().split('T')[0];
+
+  let newStreak = 1;
+  if (last === today) return; // already updated today
+  else if (last === yDay) newStreak = streak + 1;
+
+  await update(userRef, {
+    lastActivityDate: today,
+    streakCount: newStreak
+  });
+
+  console.log(`Streak updated: ${newStreak} days`);
+  };
+
 
     try {
       const reviewWithId = {

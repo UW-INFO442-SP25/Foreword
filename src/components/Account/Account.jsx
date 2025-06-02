@@ -14,6 +14,8 @@ export default function Account({ updateReviewLikes }) {
     const [userReviews, setUserReviews] = useState([]);
     const { currentUser, logout } = useAuth();
     const navigate = useNavigate();
+    const [streak, setStreak] = useState(null);
+
 
     useEffect(() => {
         if (currentUser) {
@@ -23,6 +25,7 @@ export default function Account({ updateReviewLikes }) {
                 const data = snapshot.val();
                 if (data) {
                     setIsPublic(data.public || false);
+                    setStreak(data.streakCount || 0);
 
                     // Get user's reviews
                     if (data.reviewIds && Array.isArray(data.reviewIds)) {
@@ -68,7 +71,9 @@ export default function Account({ updateReviewLikes }) {
                 photoURL: currentUser.photoURL,
                 uid: currentUser.uid,
                 public: !isPublic,
-                reviewIds: userReviews.map(review => review.id) // Preserve review IDs
+                reviewIds: userReviews.map(review => review.id), // Preserve review IDs
+                streakCount: 1,
+                lastActivityDate: new Date().toISOString().split('T')[0]
             });
         } catch (error) {
             setError('Failed to update privacy settings: ' + error.message);
@@ -89,6 +94,11 @@ export default function Account({ updateReviewLikes }) {
                     <div>
                         <h2>{currentUser?.displayName}</h2>
                         <p>{currentUser?.email}</p>
+                        {streak > 0 && (
+                        <div className="streak-badge">
+                            🔥 {streak}-day streak
+                        </div>
+                        )}
                     </div>
                 </div>
             </div>

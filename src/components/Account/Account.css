@@ -34,6 +34,7 @@
   padding: 0.5rem 1rem;
   cursor: pointer;
   margin-bottom: 2rem;
+  margin-top: 3rem;
 }
 
 .btn-logout:hover {
@@ -64,3 +65,13 @@
   margin-top: 1rem;
 }
 
+.streak-badge {
+  background-color: #fef3c7;
+  color: #92400e;   
+  font-weight: 600;
+  display: inline-block;
+  padding: 6px 12px;
+  margin-top: 4px;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+}
