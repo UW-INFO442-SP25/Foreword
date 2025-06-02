@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { getProxiedImageUrl } from '../../utils/imageUtils';
 import './Navbar.css';
@@ -8,6 +8,7 @@ import forewordLogo from '../../imgs/foreword-logo.png';
 export default function Navbar() {
     const { currentUser } = useAuth();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+     const location = useLocation();
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -33,9 +34,9 @@ export default function Navbar() {
 
             {isDropdownOpen && (
                 <div className="dropdown-menu">
-                    <Link to="/home" onClick={closeDropdown}>Home</Link>
-                    <Link to="/community" onClick={closeDropdown}>Community</Link>
-                    <Link to="/InputBook" onClick={closeDropdown}>Browse Books</Link>
+                     <Link to="/home" onClick={closeDropdown} className={location.pathname === '/home' ? 'active' : ''}>Home</Link>
+                    <Link to="/community" onClick={closeDropdown} className={location.pathname === '/community' ? 'active' : ''}>Community</Link>
+                    <Link to="/InputBook" onClick={closeDropdown} className={location.pathname === '/InputBook' ? 'active' : ''}>Search Books</Link>
                     {currentUser ? (
                         <Link to="/account" onClick={closeDropdown}>Profile</Link>
                     ) : (
@@ -45,9 +46,9 @@ export default function Navbar() {
             )}
             
             <nav className="nav-links">
-                <Link to="/home">Home</Link>
-                <Link to="/community">Community</Link>
-                <Link to="/InputBook">Browse Books</Link>
+                <Link to="/home" className={location.pathname === '/home' ? 'active' : ''}>Home</Link>
+                <Link to="/community" className={location.pathname === '/community' ? 'active' : ''}>Community</Link>
+                <Link to="/InputBook" className={location.pathname === '/InputBook' ? 'active' : ''}>Search Books</Link>
                 {currentUser ? (
                     <Link to="/account" className="profile-link">
                         {currentUser.photoURL ? (
