@@ -24,16 +24,19 @@ export default function Community({ reviews = [], updateReviewLikes, currentUser
                 const followingRef = ref(db, `follows/${currentUser.uid}`);
                 const followingSnapshot = await get(followingRef);
 
-                if (!followingSnapshot.exists()) {
-                    setFollowingReviews([]);
-                    return;
-                }
+                // Get reviews from followed users and current user
+                const followingUsers = followingSnapshot.exists()
+                    ? [...Object.keys(followingSnapshot.val()), currentUser.uid]
+                    : [currentUser.uid];
 
-                const followingUsers = Object.keys(followingSnapshot.val());
-
-                // Filter reviews to only include those from followed users
+                // Filter reviews to include those from followed users and current user
                 const filteredReviews = reviews.filter(review =>
                     followingUsers.includes(review.reviewerId)
+                );
+
+                // Sort reviews by date (newest first)
+                filteredReviews.sort((a, b) =>
+                    new Date(b.createdAt) - new Date(a.createdAt)
                 );
 
                 setFollowingReviews(filteredReviews);
@@ -92,7 +95,7 @@ export default function Community({ reviews = [], updateReviewLikes, currentUser
                     {!currentUser ? (
                         <p>Log in to access Foreword</p>
                     ) : (
-                        <p>No reviews from followed users yet. Follow some friends to see their reviews!</p>
+                        <p>No reviews yet. Be the first to share your thoughts!</p>
                     )}
                 </div>
             ) : (
