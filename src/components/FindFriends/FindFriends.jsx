@@ -36,9 +36,8 @@ export default function FindFriends() {
 
                     const usersArray = Object.entries(usersData)
                         .filter(([uid, user]) =>
-                            // Filter out current user, private accounts, and users already being followed
+                            // Filter out current user and users already being followed
                             uid !== currentUser?.uid &&
-                            user.public &&
                             !followingIds.includes(uid)
                         )
                         .map(([uid, user]) => ({
@@ -112,7 +111,10 @@ export default function FindFriends() {
                                 </div>
                             )}
                             <div className="user-info">
-                                <h3>{user.displayName || 'Anonymous User'}</h3>
+                                <h3>
+                                    {user.displayName || 'Anonymous User'}
+                                    {!user.public && <span className="private-badge">Private</span>}
+                                </h3>
                                 <p>{user.email}</p>
                             </div>
                         </Link>

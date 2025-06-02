@@ -1,12 +1,17 @@
 .review-item {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  background-color: white;
-  position: relative;
   display: flex;
-  overflow: hidden;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 20px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.review-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .review-cover {
@@ -42,6 +47,7 @@
 }
 
 .review-title {
+  text-align: left;
   margin: 0 0 8px 0;
   padding-right: 60px;
   color: #333;
@@ -103,13 +109,12 @@
 }
 
 .reviewer-link {
-  color: #8c59c0;
+  color: #007bff;
   text-decoration: none;
-  transition: color 0.2s ease;
+  font-weight: 500;
 }
 
 .reviewer-link:hover {
-  color: #6b3d99;
   text-decoration: underline;
 }
 

@@ -42,10 +42,10 @@ export default function UserProfile() {
                     const reviewsSnapshot = await get(reviewsRef);
                     if (reviewsSnapshot.exists()) {
                         const allReviews = reviewsSnapshot.val();
-                        // Get all public reviews by this user
+                        // Get all reviews by this user, filtering based on privacy settings
                         const userReviewsList = data.reviewIds
                             .map(id => allReviews[id])
-                            .filter(review => review && review.public) // Only show public reviews
+                            .filter(review => review && (data.public || review.public)) // Show reviews if user is public or review is public
                             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Sort by newest first
                         setUserReviews(userReviewsList);
                     }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../../firebase';
-import { ref, onValue, set, get } from 'firebase/database';
+import { ref, onValue, set, get, remove } from 'firebase/database';
 import Review from '../Review/Review';
 import FollowRequests from '../FollowRequests/FollowRequests';
 import { getProxiedImageUrl } from '../../utils/imageUtils';
@@ -65,7 +65,39 @@ export default function Account({ updateReviewLikes }) {
 
         try {
             const userRef = ref(db, `users/${currentUser.uid}`);
-            // Only save the essential user data
+
+            // If switching to public, accept all pending follow requests
+            if (!isPublic) {
+                const requestsRef = ref(db, `followRequests/${currentUser.uid}`);
+                const requestsSnapshot = await get(requestsRef);
+
+                if (requestsSnapshot.exists()) {
+                    const requestsData = requestsSnapshot.val();
+                    const pendingRequests = Object.entries(requestsData)
+                        .filter(([, request]) => request.status === 'pending');
+
+                    // Process all pending requests
+                    for (const [requesterId] of pendingRequests) {
+                        // Add to followers
+                        const followerRef = ref(db, `followers/${currentUser.uid}/${requesterId}`);
+                        await set(followerRef, {
+                            timestamp: Date.now()
+                        });
+
+                        // Add to requester's following
+                        const followingRef = ref(db, `follows/${requesterId}/${currentUser.uid}`);
+                        await set(followingRef, {
+                            timestamp: Date.now()
+                        });
+
+                        // Remove the request
+                        const requestRef = ref(db, `followRequests/${currentUser.uid}/${requesterId}`);
+                        await remove(requestRef);
+                    }
+                }
+            }
+
+            // Update user's public status
             await set(userRef, {
                 displayName: currentUser.displayName,
                 email: currentUser.email,
@@ -76,6 +108,11 @@ export default function Account({ updateReviewLikes }) {
                 streakCount: 1,
                 lastActivityDate: new Date().toISOString().split('T')[0]
             });
+
+            // Reload the page if switching to public
+            if (!isPublic) {
+                window.location.reload();
+            }
         } catch (error) {
             setError('Failed to update privacy settings: ' + error.message);
         }
@@ -120,7 +157,7 @@ export default function Account({ updateReviewLikes }) {
                 Log Out
             </button>
 
-            <FollowRequests />
+            {!isPublic && <FollowRequests />}
             <FollowLists
                 userId={currentUser.uid}
                 isOwnProfile={true}

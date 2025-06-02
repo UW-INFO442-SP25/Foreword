@@ -78,7 +78,17 @@ function AppContent() {
             return reviewer?.public;
           });
 
-          reviewsArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          // Sort by likes first (descending), then by date (descending)
+          reviewsArray.sort((a, b) => {
+            const likesA = Object.keys(a.likes || {}).length;
+            const likesB = Object.keys(b.likes || {}).length;
+
+            if (likesB !== likesA) {
+              return likesB - likesA; // Sort by likes first
+            }
+            return new Date(b.createdAt) - new Date(a.createdAt); // Then by date
+          });
+
           setReviews(reviewsArray);
         }
 
