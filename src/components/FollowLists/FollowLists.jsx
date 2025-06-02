@@ -131,9 +131,9 @@ export default function FollowLists({ userId, isOwnProfile }) {
                             {followers.map(user => (
                                 <div key={user.id} className="user-item">
                                     <Link to={`/user/${user.id}`} className="user-info">
-                                        <img 
-                                            src={getProxiedImageUrl(user.photoURL)} 
-                                            alt={user.displayName} 
+                                        <img
+                                            src={getProxiedImageUrl(user.photoURL)}
+                                            alt={user.displayName}
                                             className="user-avatar"
                                         />
                                         <div>
@@ -161,9 +161,9 @@ export default function FollowLists({ userId, isOwnProfile }) {
                             {following.map(user => (
                                 <div key={user.id} className="user-item">
                                     <Link to={`/user/${user.id}`} className="user-info">
-                                        <img 
-                                            src={getProxiedImageUrl(user.photoURL)} 
-                                            alt={user.displayName} 
+                                        <img
+                                            src={getProxiedImageUrl(user.photoURL)}
+                                            alt={user.displayName}
                                             className="user-avatar"
                                         />
                                         <div>

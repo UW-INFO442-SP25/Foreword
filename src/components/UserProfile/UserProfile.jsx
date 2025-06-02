@@ -56,7 +56,7 @@ export default function UserProfile() {
         };
 
         loadUserData();
-    }, [userId]);
+    }, [userId, currentUser.uid, navigate]);
 
     if (error) {
         return <div className="error-message">{error}</div>;
