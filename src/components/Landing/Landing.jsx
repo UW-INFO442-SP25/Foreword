@@ -1,43 +1,67 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
 import './Landing.css';
+import { Link } from 'react-router-dom';
+
+import forewordLogo from '../../imgs/foreword-logo.png';
+import signUpImg from '../../imgs/Sign-up.png';
+import googleLogo from '../../imgs/Google-logo.svg';
+import reviewPage from '../../imgs/review-page.png';
+import writePage from '../../imgs/write-page.png';
+import communityPage from '../../imgs/community-page.png';
+import searchPage from '../../imgs/search-page.png';
 
 export default function Landing() {
-    const { currentUser } = useAuth();
+  const scrollToContent = () => {
+    const content = document.getElementById('landing-content');
+    if (content) {
+      content.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
-    return (
-        <div className="landing-container">
-            <div className="landing-hero">
-                <h1>Welcome to Foreword</h1>
-                <p className="landing-subtitle">Your personal reading companion</p>
-                <div className="landing-cta">
-                    {currentUser ? (
-                        <Link to="/feed" className="landing-button primary">Go to Feed</Link>
-                    ) : (
-                        <Link to="/login" className="landing-button primary">Get Started</Link>
-                    )}
-                    <Link to="/about" className="landing-button secondary">Learn More</Link>
-                </div>
-            </div>
-            
-            <div className="landing-features">
-                <div className="feature-card">
-                    <div className="feature-icon">📚</div>
-                    <h3>Track Your Reading</h3>
-                    <p>Keep a record of books you've read and want to read</p>
-                </div>
-                <div className="feature-card">
-                    <div className="feature-icon">🔍</div>
-                    <h3>Discover Books</h3>
-                    <p>Find new books based on your interests and friends' reviews</p>
-                </div>
-                <div className="feature-card">
-                    <div className="feature-icon">💬</div>
-                    <h3>Connect with Friends</h3>
-                    <p>Share your thoughts and discuss books with others</p>
-                </div>
-            </div>
+  return (
+    <div className="landing-wrapper">
+      <div className="hero" style={{ backgroundImage: `url(${signUpImg})` }}>
+        <img src={forewordLogo} alt="Foreword Logo" className="hero-logo" />
+        <h1 className="hero-title">Reading, better together</h1>
+        <p className="subtitle">Rate your reads and join the conversation</p>
+        <div className="cta-buttons">
+          <button className="google-btn">
+            <img src={googleLogo} alt="Google logo" /> Continue with Google
+          </button>
+            <Link to="/about" className="cta-about">About Us</Link>
+            <button className="cta-secondary" onClick={scrollToContent}>Learn more</button>
+
         </div>
-    );
-} 
+      </div>
+
+      <div id="landing-content" className="content-section">
+        <div className="section">
+          <div className="text-block">
+            <h2>Rate Your Reads</h2>
+            <h3>Rate books. Start conversations.</h3>
+            <p>Give each book a 1–10 score, and share your take with others.</p>
+          </div>
+          <img src={reviewPage} alt="Write a Book Review" className="section-img" />
+        </div>
+
+        <div className="section reverse">
+          <div className="text-block">
+            <h2>Share your thoughts</h2>
+            <h3>Your reading feed powered by <em>friends</em></h3>
+            <p>See what your friends are reading, loving, and hating.</p>
+          </div>
+          <img src={communityPage} alt="Community Page" className="section-img" />
+        </div>
+
+        <div className="section">
+          <div className="text-block">
+            <h2>Discover</h2>
+            <h3>Find your next read</h3>
+            <p>Follow trending books, ratings from real people, and discover your next read.</p>
+          </div>
+          <img src={searchPage} alt="Search Books Page" className="section-img" />
+        </div>
+      </div>
+    </div>
+  );
+}

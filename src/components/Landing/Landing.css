@@ -1,119 +1,173 @@
-.landing-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-
-.landing-hero {
-  text-align: center;
-  padding: 4rem 1rem;
-  margin-bottom: 3rem;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  border-radius: 8px;
-}
-
-.landing-hero h1 {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  color: #333;
-}
-
-.landing-subtitle {
-  font-size: 1.5rem;
-  color: #555;
-  margin-bottom: 2rem;
-}
-
-.landing-cta {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-.landing-button {
-  padding: 0.75rem 1.5rem;
-  border-radius: 4px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: all 0.2s ease;
-}
-
-.landing-button.primary {
-  background-color: #007bff;
+.landing-wrapper {
+  font-family: 'Lora', serif;
+  background-color: black;
   color: white;
 }
 
-.landing-button.primary:hover {
-  background-color: #0069d9;
-}
-
-.landing-button.secondary {
-  background-color: transparent;
-  color: #007bff;
-  border: 1px solid #007bff;
-}
-
-.landing-button.secondary:hover {
-  background-color: rgba(0, 123, 255, 0.1);
-}
-
-.landing-features {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-top: 3rem;
-}
-
-.feature-card {
-  background-color: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.hero {
+  background-size: cover;
+  background-position: center;
   text-align: center;
-  transition: transform 0.3s ease;
+  padding: 6rem 2rem;
+  position: relative;
 }
 
-.feature-card:hover {
-  transform: translateY(-5px);
-}
-
-.feature-icon {
-  font-size: 3rem;
+.hero-logo {
+  max-width: 20rem;
   margin-bottom: 1rem;
 }
 
-.feature-card h3 {
-  margin: 1rem 0;
-  color: #333;
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: bold;
 }
 
-.feature-card p {
-  color: #666;
+.subtitle {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.cta-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* About Us — smaller size */
+.cta-about {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  border-radius: 40px;
+  padding: 0.4rem 0.0rem 0.6rem 0rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+
+.cta-about:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+/* Google Button — wide and solid white */
+.google-btn {
+  background-color: white;
+  color: black;
+  font-weight: 700;
+  padding: 1rem 2rem;
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: none;
+  cursor: not-allowed;
+  font-size: 1rem;
+  width: 300px;
+  justify-content: center;
+}
+
+/* Shared secondary button style (About Us & Learn More) */
+.cta-secondary {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  border-radius: 40px;
+  padding: 0.5rem 3rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+
+.cta-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.content-section {
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6rem;
+  background-color: black;
+}
+
+.section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.section.reverse {
+  flex-direction: row-reverse;
+}
+
+.section-img {
+  max-width: 400px;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.text-block {
+  max-width: 500px;
+}
+
+.text-block h2 {
+  font-size: 1.2rem;
+  color: #ccc;
+}
+
+.text-block h3 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.text-block p {
+  font-size: 1rem;
+  color: #aaa;
   line-height: 1.6;
 }
 
 @media (max-width: 768px) {
-  .landing-hero h1 {
-    font-size: 2.5rem;
+  .hero-title {
+    font-size: 2rem;
   }
-  
-  .landing-subtitle {
-    font-size: 1.2rem;
-  }
-  
-  .landing-features {
-    grid-template-columns: 1fr;
-  }
-  
-  .landing-cta {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .landing-button {
-    width: 100%;
-    max-width: 300px;
+
+  .section {
+    flex-direction: column !important;
     text-align: center;
   }
-} 
+
+  .text-block {
+    max-width: 100%;
+  }
+
+  .section-img {
+    max-width: 90%;
+  }
+
+  .google-btn,
+  .cta-secondary {
+    width: 90vw;
+    max-width: 320px;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    border-radius: 40px;
+  }
+}

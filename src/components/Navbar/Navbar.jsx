@@ -49,6 +49,7 @@ export default function Navbar() {
                 <Link to="/home" className={location.pathname === '/home' ? 'active' : ''}>Home</Link>
                 <Link to="/community" className={location.pathname === '/community' ? 'active' : ''}>Community</Link>
                 <Link to="/InputBook" className={location.pathname === '/InputBook' ? 'active' : ''}>Search Books</Link>
+
                 {currentUser ? (
                     <Link to="/account" className="profile-link">
                         {currentUser.photoURL ? (
